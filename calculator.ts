@@ -74,8 +74,7 @@ class Calculator {
   }
 
   calcResult() {
-    if (this.currentOp === null || this.display === "")
-      return;
+    if (this.currentOp === null || this.display === "") return;
 
     if (this.secondOperand === null) {
       this.secondOperand = +this._display;
@@ -128,7 +127,7 @@ document.querySelector(".clear-btn")?.addEventListener("click", () => {
 
 document.querySelector(".backspace-btn")?.addEventListener("click", () => {
   calculator.backspaceDisplay();
-})
+});
 
 document.querySelector(".ac-btn")?.addEventListener("click", () => {
   calculator.reset();
