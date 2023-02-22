@@ -63,9 +63,11 @@ class Calculator {
         this.clear();
     }
     calcResult() {
-        if (this.currentOp === null || this.display === "")
+        if (this.currentOp === null)
             return;
         if (this.secondOperand === null) {
+            if (this.display === "")
+                return;
             this.secondOperand = +this._display;
         }
         const result = operate(this.firstOperand, this.secondOperand, this.currentOp);

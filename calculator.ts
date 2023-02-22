@@ -74,9 +74,11 @@ class Calculator {
   }
 
   calcResult() {
-    if (this.currentOp === null || this.display === "") return;
+    if (this.currentOp === null) return;
 
     if (this.secondOperand === null) {
+      if (this.display === "") return;
+
       this.secondOperand = +this._display;
     }
 
