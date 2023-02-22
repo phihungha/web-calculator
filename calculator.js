@@ -1,4 +1,4 @@
-var _a, _b;
+var _a, _b, _c, _d;
 function add(a, b) {
     return a + b;
 }
@@ -26,8 +26,10 @@ function operate(a, b, op) {
 class Calculator {
     constructor() {
         this._display = "";
-        this.lastOperand = null;
+        this.firstOperand = 0;
+        this.secondOperand = null;
         this.currentOp = null;
+        this.display = "0";
     }
     get display() {
         return this._display;
@@ -46,25 +48,45 @@ class Calculator {
             this.display += digit;
         }
     }
+    backspaceDisplay() {
+        if (this.currentOp === null && this.display.length === 1) {
+            this.display = "0";
+        }
+        else {
+            this.display = this.display.slice(0, -1);
+        }
+    }
     startOperation(op) {
-        this.lastOperand = +this.display;
+        if (this.currentOp === null) {
+            this.firstOperand = +this.display;
+        }
+        this.secondOperand = null;
         this.currentOp = op;
         this.clear();
     }
     calcResult() {
-        if (this.currentOp !== null && this.lastOperand !== null) {
-            const currentOperand = +this._display;
-            const result = operate(this.lastOperand, currentOperand, this.currentOp);
-            this.display = result.toString();
+        if (this.currentOp === null || this.display === "")
+            return;
+        if (this.secondOperand === null) {
+            this.secondOperand = +this._display;
         }
+        const result = operate(this.firstOperand, this.secondOperand, this.currentOp);
+        this.display = result.toString();
+        this.firstOperand = result;
     }
     clear() {
-        if (this.lastOperand !== null) {
+        if (this.currentOp !== null) {
             this.display = "";
         }
         else {
             this.display = "0";
         }
+    }
+    reset() {
+        this.display = "0";
+        this.firstOperand = 0;
+        this.secondOperand = null;
+        this.currentOp = null;
     }
 }
 const calculator = new Calculator();
@@ -85,4 +107,10 @@ document.querySelectorAll(".pad-op-btn").forEach((elem) => {
 });
 (_b = document.querySelector(".clear-btn")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => {
     calculator.clear();
+});
+(_c = document.querySelector(".backspace-btn")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", () => {
+    calculator.backspaceDisplay();
+});
+(_d = document.querySelector(".ac-btn")) === null || _d === void 0 ? void 0 : _d.addEventListener("click", () => {
+    calculator.reset();
 });

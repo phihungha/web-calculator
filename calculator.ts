@@ -32,7 +32,8 @@ function operate(a: number, b: number, op: operator) {
 
 class Calculator {
   _display = "";
-  lastOperand: number | null = null;
+  firstOperand = 0;
+  secondOperand: number | null = null;
   currentOp: operator | null = null;
 
   constructor() {
@@ -57,26 +58,49 @@ class Calculator {
     }
   }
 
+  backspaceDisplay() {
+    if (this.currentOp === null && this.display.length === 1) {
+      this.display = "0";
+    } else {
+      this.display = this.display.slice(0, -1);
+    }
+  }
+
   startOperation(op: operator) {
-    this.lastOperand = +this.display;
+    if (this.currentOp === null) {
+      this.firstOperand = +this.display;
+    }
+    this.secondOperand = null;
     this.currentOp = op;
     this.clear();
   }
 
   calcResult() {
-    if (this.currentOp !== null && this.lastOperand !== null) {
-      const currentOperand = +this._display;
-      const result = operate(this.lastOperand, currentOperand, this.currentOp);
-      this.display = result.toString();
+    if (this.currentOp === null || this.display === "")
+      return;
+
+    if (this.secondOperand === null) {
+      this.secondOperand = +this._display;
     }
+
+    const result = operate(this.firstOperand, this.secondOperand, this.currentOp);
+    this.display = result.toString();
+    this.firstOperand = result;
   }
 
   clear() {
-    if (this.lastOperand !== null) {
+    if (this.currentOp !== null) {
       this.display = "";
     } else {
       this.display = "0";
     }
+  }
+
+  reset() {
+    this.display = "0";
+    this.firstOperand = 0;
+    this.secondOperand = null;
+    this.currentOp = null;
   }
 }
 
@@ -102,4 +126,12 @@ document.querySelector(".pad-calc-btn")?.addEventListener("click", () => {
 
 document.querySelector(".clear-btn")?.addEventListener("click", () => {
   calculator.clear();
+});
+
+document.querySelector(".backspace-btn")?.addEventListener("click", () => {
+  calculator.backspaceDisplay();
+})
+
+document.querySelector(".ac-btn")?.addEventListener("click", () => {
+  calculator.reset();
 });
