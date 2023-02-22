@@ -57,9 +57,7 @@ class Calculator {
         }
     }
     startOperation(op) {
-        if (this.currentOp === null) {
-            this.firstOperand = +this.display;
-        }
+        this.firstOperand = +this.display;
         this.secondOperand = null;
         this.currentOp = op;
         this.clear();
